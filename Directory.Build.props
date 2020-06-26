@@ -1,0 +1,45 @@
+﻿<Project>
+
+  <PropertyGroup Label="Folders">
+    <SrcFolder>$(MSBuildThisFileDirectory)src\</SrcFolder>
+    <EngFolder>$(MSBuildThisFileDirectory)eng\</EngFolder>
+    <TestFolder>$(MSBuildThisFileDirectory)test\</TestFolder>
+  </PropertyGroup>
+
+  <ItemGroup Label="Analyzers">
+    <!-- Code Helpers -->
+    <PackageReference Include="JetBrains.Annotations" Version="*" />
+
+    <!-- Meta Package for all MS Analyzers -->
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="*">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.113">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+
+    <PackageReference Include="Microsoft.CodeAnalysis.Metrics" Version="*">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="*" />
+  </ItemGroup>
+
+  <ItemGroup Label="Analyzer Settings Files">
+    <!-- Shared Stylecop Rules. Make sure Build Action is "C# Analyzer Additional File" -->
+    <AdditionalFiles Include="$(EngFolder)stylecop.json" Link="stylecop.json" />
+    <AnalyzerRules Include="$(EngFolder)default-rules.xml"/>
+  </ItemGroup>
+
+  <!-- Analyzers -->
+  <PropertyGroup Label="Analyzer Settings">
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <CodeAnalysisTreatWarningsAsErrors>$(TreatWarningsAsErrors)</CodeAnalysisTreatWarningsAsErrors>
+    <CodeAnalysisRuleSet>@(AnalyzerRules)</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+</Project>
