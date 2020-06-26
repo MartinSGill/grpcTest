@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+option csharp_namespace = "GRpcTest.GRpcTodo";
+
+package grpcTest.grpcTodo;
+
+// The greeting service definition.
+service Todo {
+  // Sends a greeting
+  rpc GetTodos(GetTodosMessage) returns (GetTodosReply);
+}
+
+message GetTodosMessage {};
+
+message TodoMessage {
+  uint32 Priority = 1;
+  string Date = 2;
+  string Description = 3;
+}
+
+// The response message containing the greetings.
+message GetTodosReply {
+  repeated TodoMessage Todos = 1;
+}

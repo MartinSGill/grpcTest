@@ -2,11 +2,20 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>GRpcWeather</AssemblyName>
+    <RootNamespace>GRpcTest.GRpcWeather</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <Protobuf Include="Protos\greet.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\weather.proto">
+      <GrpcServices>Server</GrpcServices>
+    </Protobuf>
   </ItemGroup>
+
+  <!-- Work-around for Rider intellisense not working -->
+  <Target Name="Protobuf_Compile_Before_AssemblyReferences" BeforeTargets="ResolveAssemblyReferences">
+    <CallTarget Targets="_Protobuf_Compile_BeforeCsCompile" />
+  </Target>
 
   <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore" Version="2.27.0" />
