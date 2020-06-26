@@ -67,18 +67,14 @@ option csharp_namespace = "GRpcTest.GRpcWeather";
 
 package grpcTest.grpcWeather;
 
-// The greeting service definition.
 service Weather {
-    // Sends a greeting
     rpc Temperature(LocationMessage) returns (TemperatureReply);
 }
 
-// The request message containing the user's name.
 message LocationMessage {
     string name = 1;
 }
 
-// The response message containing the greetings.
 message TemperatureReply {
     int32 Celsius = 1;
     int32 Fahrenheit = 2;

@@ -4,9 +4,7 @@ option csharp_namespace = "GRpcTest.GRpcTodo";
 
 package grpcTest.grpcTodo;
 
-// The greeting service definition.
 service Todo {
-  // Sends a greeting
   rpc GetTodos(GetTodosMessage) returns (GetTodosReply);
 }
 
@@ -18,7 +16,6 @@ message TodoMessage {
   string Description = 3;
 }
 
-// The response message containing the greetings.
 message GetTodosReply {
   repeated TodoMessage Todos = 1;
 }
