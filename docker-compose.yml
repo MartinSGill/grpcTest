@@ -1,0 +1,22 @@
+version: '3.4'
+
+services:
+  grpcweather:
+    image: ${DOCKER_REGISTRY-}grpcweather
+    build:
+      context: .
+      dockerfile: src/grpcWeather/Dockerfile
+
+  grpctodo:
+    image: ${DOCKER_REGISTRY-}grpctodo
+    build:
+      context: .
+      dockerfile: src/grpcTodo/Dockerfile
+
+
+  grpcdashboard:
+    image: ${DOCKER_REGISTRY-}grpcdashboard
+    build:
+      context: .
+      dockerfile: src/grpcDashboard/Dockerfile
+
