@@ -1,8 +1,10 @@
+using System.Linq;
 using Nuke.Common;
 using Nuke.Common.Execution;
 using Nuke.Common.Git;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
+using Nuke.Common.Tools.Docker;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Utilities.Collections;
@@ -20,6 +22,18 @@ class Build : NukeBuild
     [GitVersion] readonly GitVersion GitVersion;
 
     [Solution] readonly Solution Solution;
+
+    Target DockerBuild => _ => _
+        .Executes(() =>
+        {
+            Solution
+                .AllProjects
+                .Where(p => p.Directory.GlobFiles("Dockerfile").Any())
+                .ForEach(p =>
+                    DockerTasks.DockerBuild(s => s
+                        .SetFile(p.Directory / "Dockerfile")
+                        .SetPath(RootDirectory)));
+        });
 
     Target Clean => _ => _
         .Before(Restore)
@@ -48,8 +62,11 @@ class Build : NukeBuild
     Target Restore => _ => _
         .Executes(() =>
         {
-            DotNetRestore(s => s
-                .SetProjectFile(Solution));
+            Solution.AllProjects.Where(p => p.Name != "docker-compose")
+                .ForEach(p =>
+                    DotNetRestore(s => s
+                        .SetProjectFile(p))
+                );
         });
 
     AbsolutePath SourceDirectory => RootDirectory / "src";
