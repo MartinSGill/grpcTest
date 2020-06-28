@@ -5,8 +5,10 @@
     using Grpc.Net.Client;
     using GRpcTest.GRpcTodo;
     using GRpcTest.GRpcWeather;
+    using GrpcTools.GRpcDashboard.Services;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
 
     public class IndexModel : PageModel
@@ -17,17 +19,22 @@
 
         public IEnumerable<TodoMessage> Todos { get; private set; } = new List<TodoMessage>();
 
-        public IndexModel(ILogger<IndexModel> logger)
+        public WeatherService Weather { get; set; }
+
+        public TodoService Todo { get; set; }
+
+        public IndexModel(ILogger<IndexModel> logger, WeatherService weatherService, TodoService todoService)
         {
             _logger = logger;
+            Weather = weatherService;
+            Todo = todoService;
         }
+
+        public IConfiguration Configuration { get; set; }
 
         public void OnGet()
         {
-            var weatherChannel = GrpcChannel.ForAddress("https://localhost:5002");
-            var weather = new Weather.WeatherClient(weatherChannel);
-            var temp = weather.Temperature(new LocationMessage { Name = "Bob" });
-            TemperatureCelcius = temp.Celsius;
+            TemperatureCelcius = Weather.GetTemperature();
 
             var todoChannel = GrpcChannel.ForAddress("https://localhost:5003");
             var todoClient = new Todo.TodoClient(todoChannel);
