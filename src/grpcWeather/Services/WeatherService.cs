@@ -15,6 +15,7 @@
 
         public override Task<TemperatureReply> Temperature(LocationMessage request, ServerCallContext context)
         {
+            _logger.LogInformation("Temperature Called");
             return Task.FromResult(
                 new TemperatureReply { Celsius = 100, Fahrenheit = 212, Kelvin = 373 });
         }

@@ -1,6 +1,5 @@
 namespace GrpcTools.GRpcDashboard
 {
-    using GRpcTest.GRpcWeather;
     using GrpcTools.GRpcDashboard.Services;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -51,6 +50,7 @@ namespace GrpcTools.GRpcDashboard
             services.AddRazorPages();
             services.AddTransient<WeatherService>();
             services.AddTransient<TodoService>();
+            services.AddTransient<GrpcChannelProvider>();
         }
     }
 }

@@ -23,18 +23,6 @@ class Build : NukeBuild
 
     [Solution] readonly Solution Solution;
 
-    Target DockerBuild => _ => _
-        .Executes(() =>
-        {
-            Solution
-                .AllProjects
-                .Where(p => p.Directory.GlobFiles("Dockerfile").Any())
-                .ForEach(p =>
-                    DockerTasks.DockerBuild(s => s
-                        .SetFile(p.Directory / "Dockerfile")
-                        .SetPath(RootDirectory)));
-        });
-
     Target Clean => _ => _
         .Before(Restore)
         .Executes(() =>
@@ -55,6 +43,18 @@ class Build : NukeBuild
                 .SetFileVersion(GitVersion.AssemblySemFileVer)
                 .SetInformationalVersion(GitVersion.InformationalVersion)
                 .EnableNoRestore());
+        });
+
+    Target DockerBuild => _ => _
+        .Executes(() =>
+        {
+            Solution
+                .AllProjects
+                .Where(p => p.Directory.GlobFiles("Dockerfile").Any())
+                .ForEach(p =>
+                    DockerTasks.DockerBuild(s => s
+                        .SetFile(p.Directory / "Dockerfile")
+                        .SetPath(RootDirectory)));
         });
 
     AbsolutePath OutputDirectory => RootDirectory / "output";

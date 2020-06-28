@@ -6,17 +6,31 @@ services:
     build:
       context: .
       dockerfile: src/grpcWeather/Dockerfile
-
+    networks:
+      - backend
+      
   grpctodo:
     image: ${DOCKER_REGISTRY-}grpctodo
     build:
       context: .
       dockerfile: src/grpcTodo/Dockerfile
-
-
+    networks:
+      - backend
+  
   grpcdashboard:
     image: ${DOCKER_REGISTRY-}grpcdashboard
     build:
       context: .
       dockerfile: src/grpcDashboard/Dockerfile
+    networks:
+      - host
+      - backend
+    depends_on:
+      - grpcweather
+      - grpctodo
 
+networks:
+  host:
+    driver: bridge
+  backend:
+    
